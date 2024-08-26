@@ -1,8 +1,6 @@
 package com.microsoft.taskbariconapp;
 
 import java.awt.Taskbar;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -16,14 +14,14 @@ import javax.swing.UIManager;
  */
 public class MyTaskbarIconApp implements Runnable {
 
-    private Taskbar taskbar;
-    private JFrame frame;
+    private final Taskbar taskbar;
+    private final JFrame frame;
 
     public MyTaskbarIconApp() {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (Exception e) {
-            e.printStackTrace();  // TODO Improve error handling
+            e.printStackTrace(); // TODO Improve error handling
         }
 
         this.taskbar = Taskbar.getTaskbar();
@@ -45,32 +43,16 @@ public class MyTaskbarIconApp implements Runnable {
         this.frame.setSize(300, 200);
 
         JButton goButton = new JButton("Go");
-        goButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                startProgress();
-            }
-        });
+        goButton.addActionListener(event -> startProgress());
 
         JButton pauseButton = new JButton("Pause");
-        pauseButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                pauseProgress();
-            }
-        });
+        pauseButton.addActionListener(event -> pauseProgress());
 
         JButton errorButton = new JButton("Error");
-        errorButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                showError();
-            }
-        });
+        errorButton.addActionListener(event -> showError());
 
         JButton supportedButton = new JButton("Supported");
-        supportedButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                checkSupported();
-            }
-        });
+        supportedButton.addActionListener(event -> checkSupported());
 
         // TODO Commented out code - remove?
         // JButton fileOpButton = new JButton("File Op");
@@ -101,7 +83,7 @@ public class MyTaskbarIconApp implements Runnable {
                 try {
                     Thread.sleep(100);
                 } catch (InterruptedException ex) {
-                    ex.printStackTrace();
+                    ex.printStackTrace(); // TODO Improve error handling
                 }
             }
         }).start();
