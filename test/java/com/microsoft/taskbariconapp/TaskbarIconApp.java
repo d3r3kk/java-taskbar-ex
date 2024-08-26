@@ -1,4 +1,4 @@
-package com.example.taskbariconapp;
+package com.microsoft.taskbariconapp;
 
 import org.junit.jupiter.api.Test;
 

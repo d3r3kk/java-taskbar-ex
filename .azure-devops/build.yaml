@@ -1,0 +1,34 @@
+trigger:
+- main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+- task: UseJava@2
+  inputs:
+    versionSpec: '17'
+    jdkArchitectureOption: 'x64'
+    distribution: 'temurin'
+    checkLatest: true
+
+- script: |
+    echo Starting Maven build...
+    mvn -B clean install
+  displayName: 'Maven Build'
+
+- script: |
+    echo Running tests...
+    mvn test
+  displayName: 'Run Tests'
+
+- script: |
+    echo Packaging JAR...
+    mvn package
+  displayName: 'Package JAR'
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(System.DefaultWorkingDirectory)/target'
+    ArtifactName: 'taskbar-icon-app'
+    publishLocation: 'Container'
