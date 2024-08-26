@@ -63,12 +63,12 @@ public class MyTaskbarIconApp implements Runnable {
             }
         });
 
-        JButton fileOpButton = new JButton("File Op");
-        supportedButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                fileOps();
-            }
-        });
+        // JButton fileOpButton = new JButton("File Op");
+        // supportedButton.addActionListener(new ActionListener() {
+        //     public void actionPerformed(ActionEvent e) {
+        //         fileOps();
+        //     }
+        // });
 
         JPanel panel = new JPanel();
         panel.add(goButton);
@@ -76,7 +76,7 @@ public class MyTaskbarIconApp implements Runnable {
         panel.add(errorButton);
         JPanel panel2 = new JPanel();
         panel2.add(supportedButton);
-        panel2.add(fileOpButton);
+        // panel2.add(fileOpButton);
 
         frame.add(panel);
         frame.add(panel2);
@@ -131,15 +131,15 @@ public class MyTaskbarIconApp implements Runnable {
         System.out.println("USER_ATTENTION_WINDOW   " + userAttentionWindow);
     }
 
-    private void fileOps() {
-        JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setSelectedFile(new File("text.tmp"));
+    // private void fileOps() {
+    //     JFileChooser fileChooser = new JFileChooser();
+    //     fileChooser.setSelectedFile(new File("text.tmp"));
 
-        int result = fileChooser.showOpenDialog(frame);
-        if (result == JFileChooser.APPROVE_OPTION) {
-            File selectedFile = fileChooser.getSelectedFile();
-            // Perform operations with the selected file
-            System.out.println("Selected file: " + selectedFile.getAbsolutePath());
-        }
-    }
+    //     int result = fileChooser.showOpenDialog(frame);
+    //     if (result == JFileChooser.APPROVE_OPTION) {
+    //         File selectedFile = fileChooser.getSelectedFile();
+    //         // Perform operations with the selected file
+    //         System.out.println("Selected file: " + selectedFile.getAbsolutePath());
+    //     }
+    // }
 }
