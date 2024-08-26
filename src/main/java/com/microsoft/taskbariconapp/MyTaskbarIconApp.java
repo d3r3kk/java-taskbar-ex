@@ -1,11 +1,19 @@
 package com.microsoft.taskbariconapp;
 
-import javax.swing.*;
-import javax.swing.filechooser.*;
-import java.awt.*;
+import java.awt.Taskbar;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 
+/**
+ * The MyTaskbarIconApp class is the entry point for the application. It implements Runnable interface
+ * which means it can be executed on a separate thread.
+ */
 public class MyTaskbarIconApp implements Runnable {
 
     private Taskbar taskbar;
@@ -15,7 +23,7 @@ public class MyTaskbarIconApp implements Runnable {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (Exception e) {
-            e.printStackTrace();
+            e.printStackTrace();  // TODO Improve error handling
         }
 
         this.taskbar = Taskbar.getTaskbar();
@@ -25,10 +33,11 @@ public class MyTaskbarIconApp implements Runnable {
         }
 
         this.frame = new JFrame("Taskbar Icon App");
-      
     }
 
-
+    /**
+     * This method gets called when this class is executed on its thread.
+     */
     public void run() {
         
         this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -63,6 +72,7 @@ public class MyTaskbarIconApp implements Runnable {
             }
         });
 
+        // TODO Commented out code - remove?
         // JButton fileOpButton = new JButton("File Op");
         // supportedButton.addActionListener(new ActionListener() {
         //     public void actionPerformed(ActionEvent e) {
@@ -76,7 +86,7 @@ public class MyTaskbarIconApp implements Runnable {
         panel.add(errorButton);
         JPanel panel2 = new JPanel();
         panel2.add(supportedButton);
-        // panel2.add(fileOpButton);
+        // panel2.add(fileOpButton);    // TODO Commented out code
 
         frame.add(panel);
         frame.add(panel2);
@@ -97,27 +107,31 @@ public class MyTaskbarIconApp implements Runnable {
         }).start();
     }
 
+    // Set the progress to be at 50% and pause the TaskBar progress
     private void pauseProgress() {
         taskbar.setWindowProgressValue(frame, 50);
         taskbar.setWindowProgressState(frame, Taskbar.State.PAUSED);
     }
 
+    // Set the progress to be at 100% and show an error for the TaskBar progress (should not get here)
     private void showError() {
         taskbar.setWindowProgressValue(frame, 100);
         taskbar.setWindowProgressState(frame, Taskbar.State.ERROR);
     }
 
+    // Check if the platform this is running on supports the various TaskBar features
+    // TODO - note this does not return anything, consider returning a boolean
     private void checkSupported() {
-        boolean iconBadgeText=taskbar.isSupported(Taskbar.Feature.ICON_BADGE_TEXT);
-        boolean iconBadgeNumber=taskbar.isSupported(Taskbar.Feature.ICON_BADGE_NUMBER);
-        boolean iconBadgeImageWindow=taskbar.isSupported(Taskbar.Feature.ICON_BADGE_IMAGE_WINDOW);
-        boolean iconImage=taskbar.isSupported(Taskbar.Feature.ICON_IMAGE);
-        boolean menu=taskbar.isSupported(Taskbar.Feature.MENU);
-        boolean progressStateWindow=taskbar.isSupported(Taskbar.Feature.PROGRESS_STATE_WINDOW);
-        boolean progressValue=taskbar.isSupported(Taskbar.Feature.PROGRESS_VALUE);
-        boolean progressValueWindow=taskbar.isSupported(Taskbar.Feature.PROGRESS_VALUE_WINDOW);
-        boolean userAttention=taskbar.isSupported(Taskbar.Feature.USER_ATTENTION);
-        boolean userAttentionWindow=taskbar.isSupported(Taskbar.Feature.USER_ATTENTION_WINDOW);
+        boolean iconBadgeText = taskbar.isSupported(Taskbar.Feature.ICON_BADGE_TEXT);
+        boolean iconBadgeNumber = taskbar.isSupported(Taskbar.Feature.ICON_BADGE_NUMBER);
+        boolean iconBadgeImageWindow = taskbar.isSupported(Taskbar.Feature.ICON_BADGE_IMAGE_WINDOW);
+        boolean iconImage = taskbar.isSupported(Taskbar.Feature.ICON_IMAGE);
+        boolean menu = taskbar.isSupported(Taskbar.Feature.MENU);
+        boolean progressStateWindow = taskbar.isSupported(Taskbar.Feature.PROGRESS_STATE_WINDOW);
+        boolean progressValue = taskbar.isSupported(Taskbar.Feature.PROGRESS_VALUE);
+        boolean progressValueWindow = taskbar.isSupported(Taskbar.Feature.PROGRESS_VALUE_WINDOW);
+        boolean userAttention = taskbar.isSupported(Taskbar.Feature.USER_ATTENTION);
+        boolean userAttentionWindow = taskbar.isSupported(Taskbar.Feature.USER_ATTENTION_WINDOW);
 
         System.out.println("ICON_BADGE_TEXT         " + iconBadgeText);
         System.out.println("ICON_BADGE_NUMBER       " + iconBadgeNumber);
@@ -131,6 +145,7 @@ public class MyTaskbarIconApp implements Runnable {
         System.out.println("USER_ATTENTION_WINDOW   " + userAttentionWindow);
     }
 
+    // TODO Commented out code - remove?
     // private void fileOps() {
     //     JFileChooser fileChooser = new JFileChooser();
     //     fileChooser.setSelectedFile(new File("text.tmp"));
