@@ -9,6 +9,7 @@ This is a simple Java application demonstrating the use of the `java.awt.Taskbar
 - **Go**: Starts a progress bar in the taskbar.
 - **Pause**: Pauses the progress at 50%.
 - **Error**: Sets the taskbar icon to an error state.
+- **Supported**: Lists the supported window(/taskbar) operations on the console.
 
 ## Requirements
 
