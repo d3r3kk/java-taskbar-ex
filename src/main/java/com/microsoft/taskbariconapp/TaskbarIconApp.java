@@ -1,11 +1,11 @@
 package com.microsoft.taskbariconapp;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import javax.swing.SwingUtilities;
 
-
+/**
+ * The TaskbarIconApp class is the entry point for the application.
+ * It initializes and runs the MyTaskbarIconApp to demonstrate taskbar icon manipulation.
+ */
 public class TaskbarIconApp {
 
     public static void main(String[] args) {
@@ -17,6 +17,3 @@ public class TaskbarIconApp {
         app.run();
     }
 }
-
-
-
