@@ -9,8 +9,10 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
 /**
- * The MyTaskbarIconApp class is the entry point for the application. It implements Runnable interface
- * which means it can be executed on a separate thread.
+ * The MyTaskbarIconApp class is the entry point for the application.
+ * 
+ * The app creates a simple GUI with buttons to control the taskbar
+ * icon's progress state and value.
  */
 public class MyTaskbarIconApp implements Runnable {
 
@@ -21,7 +23,7 @@ public class MyTaskbarIconApp implements Runnable {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (Exception e) {
-            e.printStackTrace(); // TODO Improve error handling
+            e.printStackTrace();
         }
 
         this.taskbar = Taskbar.getTaskbar();
@@ -31,16 +33,35 @@ public class MyTaskbarIconApp implements Runnable {
         }
 
         this.frame = new JFrame("Taskbar Icon App");
+        // Set application window icon from resources/app-icon.ico
+        try {
+            java.net.URL iconURL = getClass().getClassLoader().getResource("app-icon.png");
+            if (iconURL != null) {
+                java.awt.Image icon = javax.imageio.ImageIO.read(iconURL);
+                System.out.println("Setting application icon from: " + iconURL);
+                this.frame.setIconImage(icon);
+            } else {
+                System.out.println("FAILED: Setting application icon from: /src/main/resources/app-icon.png");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
      * This method gets called when this class is executed on its thread.
      */
     public void run() {
-        
+
         this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.frame.setLayout(new BoxLayout(this.frame.getContentPane(), BoxLayout.Y_AXIS));
         this.frame.setSize(300, 200);
+
+        JButton offButton = new JButton("Off");
+        offButton.addActionListener(event -> offProgress());
+
+        JButton normalButton = new JButton("Normal");
+        normalButton.addActionListener(event -> startNormalProgress());
 
         JButton goButton = new JButton("Go");
         goButton.addActionListener(event -> startProgress());
@@ -51,24 +72,22 @@ public class MyTaskbarIconApp implements Runnable {
         JButton errorButton = new JButton("Error");
         errorButton.addActionListener(event -> showError());
 
+        JButton indeterminateButton = new JButton("Indeterminate");
+        indeterminateButton.addActionListener(event -> setIndeterminate());
+
         JButton supportedButton = new JButton("Supported");
         supportedButton.addActionListener(event -> checkSupported());
 
-        // TODO Commented out code - remove?
-        // JButton fileOpButton = new JButton("File Op");
-        // supportedButton.addActionListener(new ActionListener() {
-        //     public void actionPerformed(ActionEvent e) {
-        //         fileOps();
-        //     }
-        // });
-
         JPanel panel = new JPanel();
+        panel.add(offButton);
+        panel.add(normalButton);
         panel.add(goButton);
         panel.add(pauseButton);
+        panel.add(indeterminateButton);
         panel.add(errorButton);
+
         JPanel panel2 = new JPanel();
         panel2.add(supportedButton);
-        // panel2.add(fileOpButton);    // TODO Commented out code
 
         frame.add(panel);
         frame.add(panel2);
@@ -79,14 +98,25 @@ public class MyTaskbarIconApp implements Runnable {
         new Thread(() -> {
             for (int i = 0; i <= 100; i++) {
                 final int progress = i;
-                SwingUtilities.invokeLater(() -> taskbar.setWindowProgressValue(frame,progress));
+                SwingUtilities.invokeLater(() -> taskbar.setWindowProgressValue(frame, progress));
                 try {
-                    Thread.sleep(100);
+                    Thread.sleep(30);
                 } catch (InterruptedException ex) {
-                    ex.printStackTrace(); // TODO Improve error handling
+                    ex.printStackTrace();
                 }
             }
         }).start();
+    }
+
+    // Set the state of the TaskBar progress to OFF
+    private void offProgress() {
+        taskbar.setWindowProgressState(frame, Taskbar.State.OFF);
+    }
+
+    // Set the progress to be at 0% and show normal TaskBar progress
+    private void startNormalProgress() {
+        taskbar.setWindowProgressValue(frame, 0);
+        taskbar.setWindowProgressState(frame, Taskbar.State.NORMAL);
     }
 
     // Set the progress to be at 50% and pause the TaskBar progress
@@ -95,14 +125,20 @@ public class MyTaskbarIconApp implements Runnable {
         taskbar.setWindowProgressState(frame, Taskbar.State.PAUSED);
     }
 
-    // Set the progress to be at 100% and show an error for the TaskBar progress (should not get here)
+    // set the icon to show indeterminate state
+    private void setIndeterminate() {
+        taskbar.setWindowProgressValue(frame, 0);
+        taskbar.setWindowProgressState(frame, Taskbar.State.INDETERMINATE);
+    }
+
+    // Set the progress to be at 100% and show an error for the TaskBar progress
     private void showError() {
         taskbar.setWindowProgressValue(frame, 100);
         taskbar.setWindowProgressState(frame, Taskbar.State.ERROR);
     }
 
-    // Check if the platform this is running on supports the various TaskBar features
-    // TODO - note this does not return anything, consider returning a boolean
+    // Check if the platform this is running on supports the various TaskBar
+    // features
     private void checkSupported() {
         boolean iconBadgeText = taskbar.isSupported(Taskbar.Feature.ICON_BADGE_TEXT);
         boolean iconBadgeNumber = taskbar.isSupported(Taskbar.Feature.ICON_BADGE_NUMBER);
@@ -126,17 +162,4 @@ public class MyTaskbarIconApp implements Runnable {
         System.out.println("USER_ATTENTION          " + userAttention);
         System.out.println("USER_ATTENTION_WINDOW   " + userAttentionWindow);
     }
-
-    // TODO Commented out code - remove?
-    // private void fileOps() {
-    //     JFileChooser fileChooser = new JFileChooser();
-    //     fileChooser.setSelectedFile(new File("text.tmp"));
-
-    //     int result = fileChooser.showOpenDialog(frame);
-    //     if (result == JFileChooser.APPROVE_OPTION) {
-    //         File selectedFile = fileChooser.getSelectedFile();
-    //         // Perform operations with the selected file
-    //         System.out.println("Selected file: " + selectedFile.getAbsolutePath());
-    //     }
-    // }
 }
