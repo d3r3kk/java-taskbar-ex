@@ -18,13 +18,21 @@ This is a simple Java application demonstrating the use of the `java.awt.Taskbar
 
 ## Building and Running
 
-To build and run the application:
+To build the application:
 
+### Linux/MacOS:
 ```bash
 ./mvnw clean install
 ```
-
-```cmd
-mvnw.cmd clean install
+### Windows
+```pwsh
+& ./mvnw.cmd clean install
 ```
+
+To run the application:
+
+```
+java -jar target/taskbar-icon-app-1.0-SNAPSHOT.jar
+```
+
 
