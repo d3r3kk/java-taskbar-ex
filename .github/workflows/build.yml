@@ -28,13 +28,15 @@ jobs:
         distribution: 'microsoft'
 
     - name: Build with Maven
-      run: mvnw clean install
+      run: "& ./mvnw.cmd clean install"
+      shell: pwsh
 
     - name: Run tests
-      run: mvnw test
+      run: "& ./mvnw.cmd test"
+      shell: pwsh
 
     - name: Package JAR
-      run: mvnw package
+      run: "& ./mvnw.cmd package"
 
     - name: Upload JAR
       uses: actions/upload-artifact@v4
