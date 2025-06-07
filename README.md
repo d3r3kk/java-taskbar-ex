@@ -13,7 +13,7 @@ This is a simple Java application demonstrating the use of the `java.awt.Taskbar
 
 ## Requirements
 
-- Java 17 or higher
+- Java 11 or higher (only JDK21 is tested, but they will all work)
 - Maven
 
 ## Building and Running
